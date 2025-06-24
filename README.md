@@ -1,3 +1,15 @@
+# How to connect a Vaadin Flow App with a REST Service
+
+The german blogpost you will find here: https://javapro.io/de/mit-vaadin-flow-rest-endpoints-in-core-java-konsumieren/
+
+The english blogpost you will find here: https://svenruppert.com/2025/06/24/connecting-rest-services-with-vaadin-flow-in-core-java/
+
+
+
+
+
+
+
 # core-vaadin-project-template
 
 A Template that can be used to start a Core Vaadin Flow Project.
