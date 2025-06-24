@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <parent>
         <groupId>com.svenruppert</groupId>
         <artifactId>dependencies</artifactId>
@@ -13,7 +12,7 @@
 
     <artifactId>flow-template</artifactId>
     <version>00.00.01-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
 
     <inceptionYear>2023</inceptionYear>
@@ -21,6 +20,12 @@
         <name>Sven Ruppert</name>
         <url>http://www.svenruppert.com</url>
     </organization>
+    <modules>
+        <module>model</module>
+        <module>server</module>
+        <module>client</module>
+        <module>flow-ui</module>
+    </modules>
 
     <url>https://github.com/svenruppert/core-vaadin-project-template</url>
     <name>Core Vaadin Project Template</name>
@@ -145,45 +150,12 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-bom</artifactId>
-                <type>pom</type>
-                <scope>import</scope>
-                <version>${vaadin.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
-        <!--Vaadin Flow Dependencies-->
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <!-- Replace artifactId with vaadin-core to use only free components -->
-            <artifactId>vaadin-core</artifactId>
-            <!-- Remove the following exclussion if you want to enable Hilla -->
-            <exclusions>
-                <exclusion>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>hilla-dev</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--        Demo REST Application-->
-        <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
-            <version>6.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin-testtools</artifactId>
-            <version>6.6.0</version>
-            <scope>test</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>com.svenruppert</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
         <!--    REST-Testing-->
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -204,53 +176,9 @@
     </dependencies>
 
     <build>
-        <defaultGoal>jetty:run</defaultGoal>
-        <finalName>${warName}-${project.version}</finalName>
+<!--        <defaultGoal>jetty:run</defaultGoal>-->
+<!--        <finalName>${warName}-${project.version}</finalName>-->
         <plugins>
-            <!-- Jetty plugin for easy testing without a server -->
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <configuration>
-                    <!-- If using IntelliJ IDEA with autocompilation, this
-                    might cause lots of unnecessary compilations in the
-                    background.-->
-                    <scan>2</scan>
-                    <!-- Use war output directory to get the webpack files -->
-                    <webApp>
-                        <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
-                    </webApp>
-                </configuration>
-            </plugin>
-
-            <!--
-                Take care of synchronizing java dependencies and imports in
-                package.json and main.js files.
-                It also creates webpack.config.js if not exists yet.
-            -->
-            <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-                <version>${vaadin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-frontend</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-
-
             <plugin>
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -290,28 +218,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <!--<goal>jar</goal> do not define it here again !!-->
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${app.main.class}</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
